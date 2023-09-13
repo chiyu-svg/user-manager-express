@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>home</h1>
+    <button id="update">修改</button>
+    <button id="delete">删除</button>
+    <form action="/api/user" method="POST" enctype="multipart/form-data">
+        <lable>用户名：</lable><input type="text" name="username"/><br/>
+        <lable>密  码：</lable><input type="password" name="password"/><br/>
+        <input type="file" name="avator"/><br/>
+        <input type="submit" value="提交"/>
+    </form>
+    <script>
+        const butn_id = document.querySelector("#update");
+        const butn_delete_id = document.querySelector("#delete");
+        butn_id.onclick = function (){
+            fetch("/api/user/64feda9bbeb56f153369af34", {
+                method: "PUT",
+                body: JSON.stringify({
+                    username: "zhangsan"
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(data => data.json())
+              .then(data => console.log(data));
+        }
+        butn_delete_id.onclick = function (){
+            fetch("/api/user/64feda9bbeb56f153369af34", {
+                method: "DELETE",
+            }).then(data => data.json())
+              .then(data => console.log(data));
+        }
+    </script>
+</body>
+</html>

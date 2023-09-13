@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <label>用户名：</label><input type="text" id="username" /><br/>
+    <label>密  码：</label><input type="password" id="password" /><br/>
+    <button id="login">登录</button>
+    <script>
+        axios.interceptors.request.use(function (config) {
+            alert("localStorage", localStorage.getItem("token"));
+            if(localStorage.getItem("token")){
+                config.headers["token"] = `Bearer ${localStorage.getItem("token")}`
+            }
+            return config;
+        }, function (error) {
+            return Promise.reject(error);
+        });
+
+        axios.interceptors.response.use(function (response) {
+            if(response.headers.authorization) {
+                localStorage.setItem("token", response.headers.authorization);
+            }
+            return response;
+        }, function (error) {
+            return Promise.reject(error);
+        });
+    </script>
+    <script>
+        const username = document.querySelector("#username");
+        const password = document.querySelector("#password");
+        const login_btn = document.querySelector("#login");
+        login_btn.onclick = function() {
+            axios.put("http://localhost:3000/login", {
+                username: username.value,
+                password: password.value
+            }).then(res => {
+                if(res.data.ok === 1) {
+                    document.location.href = "/";
+                } else {
+                    alert("登录验证失败");
+                }
+            })
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 500px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <img id="avator"/>
+    <script>
+        const img = document.querySelector("#avator");
+        fetch("/api/user/list")
+            .then(data => data.json())
+            .then(data => {
+                img.src = data[0].avator;
+            })
+    </script>
+</body>
+</html>
